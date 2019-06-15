@@ -17,6 +17,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('artists', 'API\ArtistController');
-Route::apiResource('albums', 'API\AlbumController');
-Route::apiResource('songs', 'API\SongController');
+Route::group(['prefix' => 'auth'], function () {
+    Route::post('login', 'AuthController@login');
+    Route::post('signup', 'AuthController@signup');
+
+    Route::group(['middleware' => 'auth:api'], function() {
+        Route::get('logout', 'AuthController@logout');
+        Route::get('user', 'AuthController@user');
+    });
+});
+
+Route::apiResource('artists', 'API\ArtistController')->middleware('auth:api');
+Route::apiResource('albums', 'API\AlbumController')->middleware('auth:api');
+Route::apiResource('songs', 'API\SongController')->middleware('auth:api');
