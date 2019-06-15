@@ -16,3 +16,7 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::apiResource('artists', 'API\ArtistController');
+Route::apiResource('albums', 'API\AlbumController');
+Route::apiResource('songs', 'API\SongController');
